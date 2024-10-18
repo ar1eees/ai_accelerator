@@ -2,7 +2,7 @@
 
 module tb_buffer_64bit;
 
-parameter BuffDepth = 128;
+parameter BuffDepth = 256;
 parameter ByteAddrW = $clog2(BuffDepth);
 parameter WordAddrW = $clog2(BuffDepth/8);
 
@@ -30,6 +30,8 @@ buffer_64bit #(
     .word_out(word_out)
 );
 
+always #5 clk = ~clk;
+
 initial begin
     $dumpfile("tb.vcd");
     $dumpvars;
@@ -42,11 +44,29 @@ initial begin
     word_addr = 0;
     byte_in   = 0;
 
-    #(10*5);
+    #(10);
 
+    read_en   = 1;
+    write_en  = 0;
+    addr_mode = 0;
+    byte_addr = 23;
 
+    #(10*2);
 
+    read_en   = 0;
+    write_en  = 1;
+    addr_mode = 0;
+    byte_addr = 7;
+    byte_in   = 8'hff;
 
+    #(10*2);
+    
+    read_en   = 1;
+    write_en  = 0;
+    addr_mode = 0;
+    byte_addr = 7;
+    
+    #(10*2);
     $finish;
 end
 

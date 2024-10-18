@@ -3,7 +3,8 @@
 module buffer_64bit #(
     parameter BuffDepth = 256,
     parameter ByteAddrW = $clog2(BuffDepth),
-    parameter WordAddrW = $clog2(BuffDepth/8)
+    parameter WordDepth = BuffDepth/8,
+    parameter WordAddrW = $clog2(WordDepth)
 ) (
     input  clk,
     input  write_en, read_en,
@@ -12,21 +13,20 @@ module buffer_64bit #(
     input  [WordAddrW-1:0] word_addr,
     input  [ 7:0] byte_in,
     input  [63:0] word_in,
-    output [ 7:0] byte_out,
+    output reg [ 7:0] byte_out,
     output reg [63:0] word_out
 );
-    reg [7:0] buffer [0:WordAddrW-1];
+    reg [63:0] buffer [0:WordDepth-1];
 
 /**************** LOAD MEMORY FILE ****************/
-    integer file, scan, i;
+    localparam FN = "../buffer.mem";
+    integer file;
     initial begin
 
-        localparam FN = "buffer.mem";
 
         file = $fopen(FN, "r");
 
         if (file != 0) begin
-            $display("Loading %s",FN);
             $readmemh(FN, buffer);
         end else begin
             $display("Error: Could not open file!");
@@ -36,7 +36,7 @@ module buffer_64bit #(
 /**************************************************/
 
     wire [WordAddrW-1:0] addr;
-    wire [63:0] data_in;
+    reg  [63:0] data_in;
 
     assign addr = (addr_mode)? {byte_addr[ByteAddrW-1:3]} : word_addr;
 
@@ -45,7 +45,7 @@ module buffer_64bit #(
             data_in = word_in;
         end else begin
             case (byte_in[2:0])
-                3'd0:    data_in = {56'd0,byte_in};
+                3'd0:    data_in = {byte_in};
                 3'd1:    data_in = {byte_in, 8'd0};
                 3'd2:    data_in = {byte_in,16'd0};
                 3'd3:    data_in = {byte_in,24'd0};

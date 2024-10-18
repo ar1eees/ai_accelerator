@@ -19,7 +19,7 @@ module buffer_64bit #(
     reg [63:0] buffer [0:WordDepth-1];
 
 /**************** LOAD MEMORY FILE ****************/
-    localparam FN = "../buffer.mem";
+    localparam FN = "../rtl/buffer.mem";
     integer file;
     initial begin
 

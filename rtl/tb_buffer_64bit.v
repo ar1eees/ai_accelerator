@@ -51,7 +51,7 @@ initial begin
     addr_mode = 0;
     byte_addr = 23;
 
-    #(10*2);
+    #(10);
 
     read_en   = 0;
     write_en  = 1;
@@ -59,14 +59,37 @@ initial begin
     byte_addr = 7;
     byte_in   = 8'hff;
 
-    #(10*2);
-    
+    #(10);
+
     read_en   = 1;
     write_en  = 0;
     addr_mode = 0;
     byte_addr = 7;
+
+    #(10);
+
+    read_en   = 1;
+    write_en  = 0;
+    addr_mode = 1;
+    word_addr = 7;
+
+    #(10);
+
+    read_en   = 0;
+    write_en  = 1;
+    addr_mode = 1;
+    word_addr = 7;
+    word_in   = 64'hffffffffffffffff;
+
+    #(10);
+
+    read_en   = 1;
+    write_en  = 0;
+    addr_mode = 1;
+    word_addr = 7;
+
+    #(10);
     
-    #(10*2);
     $finish;
 end
 

@@ -17,9 +17,26 @@ module buffer_64bit #(
 );
     reg [7:0] buffer [0:WordAddrW-1];
 
+/**************** LOAD MEMORY FILE ****************/
+    integer file, scan, i;
+    initial begin
+
+        localparam FN = "buffer.mem";
+
+        file = $fopen(FN, "r");
+
+        if (file != 0) begin
+            $display("Loading %s",FN);
+            $readmemh(FN, buffer);
+        end else begin
+            $display("Error: Could not open file!");
+            $stop;
+        end
+    end
+/**************************************************/
+
     wire [WordAddrW-1:0] addr;
     wire [63:0] data_in;
-    
 
     assign addr = (addr_mode)? {byte_addr[ByteAddrW-1:3]} : word_addr;
 

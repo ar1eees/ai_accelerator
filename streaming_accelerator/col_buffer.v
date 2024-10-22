@@ -1,19 +1,16 @@
 module col_buffer #(
     parameter RowBufSize = 16
 ) (
-    input clk, nrst,
+    input clk, nrst, start,
     input  [ 63:0] data_in,
     output [  7:0] valid,
     output [191:0] mapping
 );
-    reg start;
     reg [ 7:0] row_buff [0:1];
     reg [23:0] temp_map [0:7];
 
-
     always @(posedge clk or negedge nrst) begin
         if (!nrst) begin
-            start <= 1;
             row_buff[0] <= 8'b0;
             row_buff[1] <= 8'b0;
         end else begin
@@ -28,7 +25,6 @@ module col_buffer #(
 
             row_buff[0] <= data_in[55:48];
             row_buff[1] <= data_in[63:56];
-
         end
     end
     

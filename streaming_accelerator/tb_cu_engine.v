@@ -1,10 +1,10 @@
 
 module tb_cu_engine;
 reg  clk, nrst;
-reg  [ 71:0] filter;
-reg  [ 23:0] data_in;
-reg  [  8:0] pe_en_ctrl;
-wire [143:0] pe_out;
+reg  [71:0] filter;
+reg  [23:0] data_in;
+reg  [ 8:0] pe_en_ctrl;
+wire [15:0] pe_out;
 
 cu_engine uut(
     .clk (clk),
@@ -33,12 +33,12 @@ initial begin
     #(10*3);
     
     data_in = 64'h0706050403020100;
-    pe_en_ctrl = 9'b000111111;
+    pe_en_ctrl = 9'b000000111;
 
     #(10);
     
     data_in = 64'h0f0e0d0c0b0a0908;
-    pe_en_ctrl = 9'b111111111;
+    pe_en_ctrl = 9'b000111111;
 
     #(10);
 

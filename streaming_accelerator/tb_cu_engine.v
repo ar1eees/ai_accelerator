@@ -1,3 +1,4 @@
+`timescale 1ns/1ps
 
 module tb_cu_engine;
 reg  clk, nrst;
@@ -15,13 +16,15 @@ cu_engine uut(
     .pe_out(pe_out)
 );
 
-always #5 clk = ~clk;
+initial begin
+    clk = 0;
+    forever #5 clk = ~clk; // 100 MHz clock
+end
 
 initial begin
     $dumpfile("tb.vcd");
     $dumpvars;
 
-    clk = 0;
     nrst = 0;
     filter  = 0;
     data_in = 0;

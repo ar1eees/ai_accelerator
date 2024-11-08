@@ -1,15 +1,9 @@
-module HA (
-    input  a, b,
-    output s, c
-);
+module HA ( input  a, b, output s, c );
     assign s = a ^ b;
     assign c = a & b;
 endmodule
 
-module FA (
-    input  a, b, ci,
-    output s, co
-);
+module FA ( input  a, b, ci, output s, co );
     assign s  = (a ^ b) ^ ci;
     assign co = (a & b) | (b & ci) | (ci & a);
 endmodule
@@ -72,7 +66,6 @@ module mfu (
     mul_ss ss(.a(ai), .b(bi), .p(p_ss));
     mul_uu uu(.a(ai), .b(bi), .p(p_uu));
     assign p_su = (~bi[1])? p_ss : {(p_ss[3] ^ ai[1]) ^ (p_ss[2] & ai[0]), (p_ss[2] ^ ai[0]), p_ss[1:0]};
-
 
     always @(*) begin
         case (sel)
